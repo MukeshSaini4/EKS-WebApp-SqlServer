@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $SQL_ECR_REPOSITORY_URI
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t sqlserver-custom -f sqlserver/Dockerfile .
+      - docker tag sqlserver-custom:latest $SQL_ECR_REPOSITORY_URI:latest
+
+  post_build:
+    commands:
+      - echo Pushing image to ECR...
+      - docker push $SQL_ECR_REPOSITORY_URI:latest
+      - echo Build completed on `date`
