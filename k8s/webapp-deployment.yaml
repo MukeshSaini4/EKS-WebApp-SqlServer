@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: webapp
+  namespace: default
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: webapp
+
+  template:
+    metadata:
+      labels:
+        app: webapp
+
+    spec:
+      containers:
+      - name: webapp-container
+        image: 654278500601.dkr.ecr.us-east-1.amazonaws.com/my-ecr-repo:latest
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 8080

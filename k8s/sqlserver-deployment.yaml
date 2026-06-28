@@ -1,1 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlserver
+  namespace: default
 
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: sqlserver
+
+  template:
+    metadata:
+      labels:
+        app: sqlserver
+
+    spec:
+      containers:
+      - name: sqlserver
+        image: 654278500601.dkr.ecr.us-east-1.amazonaws.com/sqlserver:latest
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 1433
+
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+
+        - name: MSSQL_SA_PASSWORD
+          value: "Password@123"
